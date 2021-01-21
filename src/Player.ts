@@ -45,6 +45,7 @@ export interface Player {
   tag: string;
   club?: PlayerClub;
   trophies: number;
+  highestTrophies: number;
   isQualifiedFromChampionshipChallenge: boolean;
   nameColor: string;
   brawlers: PlayerBrawler[];
