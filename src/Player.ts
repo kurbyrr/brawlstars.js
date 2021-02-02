@@ -40,9 +40,14 @@ export interface PlayerBattlelogEvent {
   map: string;
 }
 
+export interface PlayerIcon {
+  id: number;
+}
+
 export interface Player {
   name: string;
   tag: string;
+  icon: PlayerIcon;
   club?: PlayerClub;
   trophies: number;
   highestTrophies: number;
