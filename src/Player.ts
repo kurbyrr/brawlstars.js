@@ -1,8 +1,8 @@
 import { StarPower } from "./Brawler";
 
 export interface PlayerClub {
-  name: string;
-  tag: string;
+  name?: string;
+  tag?: string;
 }
 
 export interface RankingsPlayerClub {
@@ -49,7 +49,7 @@ export interface Player {
   name: string;
   tag: string;
   icon: PlayerIcon;
-  club?: PlayerClub;
+  club: PlayerClub;
   trophies: number;
   highestTrophies: number;
   isQualifiedFromChampionshipChallenge: boolean;
