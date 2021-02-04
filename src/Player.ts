@@ -26,6 +26,7 @@ export interface PlayerBrawler {
   trophies: number;
   highestTrophies: number;
   starPowers: StarPower[];
+  gadgets: StarPower[];
 }
 
 export interface PlayerBattlelog {
@@ -58,7 +59,7 @@ export interface Player {
   bestTimeAsBigBrawler: number;
   duoVictories: number;
   soloVictories: number;
-  powerPlayPoints: number;
+  powerPlayPoints?: number;
   expPoints: number;
   expLevel: number;
   x3vs3Victories: number; // Thanks a lot supercell.
