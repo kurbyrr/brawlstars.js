@@ -23,9 +23,9 @@ export class APIError extends Error {
 }
 
 export class Client {
-  public token: string;
-  public cache?: Cache;
-  public baseURL: string;
+  private token: string;
+  private cache?: Cache;
+  private baseURL: string;
 
   public constructor(token: string, options: ClientOptions = { cache: true }) {
     this.token = token;
