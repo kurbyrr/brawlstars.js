@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import { stringify } from "querystring";
 import { Brawler } from "./Brawler";
 import { Club, ClubMember, RankingsClub } from "./Club";
+import { Slot } from "./Events";
 import { Player, PlayerBattlelog, RankingsPlayer } from "./Player";
 import { cleanTag } from "./utils";
 
@@ -65,25 +66,45 @@ export class Client {
     return data;
   }
 
-  public getPlayer(tag: string): Promise<Player> {
-    return this._fetch<Player>(`/players/%23${cleanTag(tag)}`).then((res) => {
-      // Thanks a lot supercell.
-      res.x3vs3Victories = (res as any)["3vs3Victories"];
-      return res;
-    });
+  /**
+   * Fetch data about a player
+   * @param tag Player in-game tag
+   * @returns Object with player data
+   */
+  public async getPlayer(tag: string): Promise<Player> {
+    const res = await this._fetch<Player>(`/players/%23${cleanTag(tag)}`);
+    // Thanks a lot supercell.
+    res.x3vs3Victories = (res as any)["3vs3Victories"];
+    return res;
   }
 
-  public getPlayerBattlelog(tag: string): Promise<PlayerBattlelog[]> {
+  /**
+   *
+   * @param tag Player in-game tag
+   * @returns Array of the player latest games
+   */
+  public async getPlayerBattlelog(tag: string): Promise<PlayerBattlelog[]> {
     return this._fetch<PlayerBattlelog[]>(
       `/players/%23${cleanTag(tag)}/battlelog`
     );
   }
 
-  public getClub(tag: string): Promise<Club> {
+  /**
+   *
+   * @param tag Club's tag
+   * @returns Object with club data
+   */
+  public async getClub(tag: string): Promise<Club> {
     return this._fetch<Club>(`/clubs/%23${cleanTag(tag)}`);
   }
 
-  public getPlayerRankings(
+  /**
+   *
+   * @param country Country's ID
+   * @param queryParams More info about these on https://developer.brawlstars.com
+   * @returns
+   */
+  public async getPlayerRankings(
     country: string,
     {
       before,
@@ -99,7 +120,13 @@ export class Client {
     return this._fetch<RankingsPlayer[]>(`/rankings/${country}/players`, query);
   }
 
-  public getClubRankings(
+  /**
+   *
+   * @param country Country's ID
+   * @param queryParams More info about these on https://developer.brawlstars.com
+   * @returns
+   */
+  public async getClubRankings(
     country: string,
     {
       before,
@@ -115,7 +142,14 @@ export class Client {
     return this._fetch<RankingsClub[]>(`/rankings/${country}/clubs`, query);
   }
 
-  public getBrawlerRankings(
+  /**
+   *
+   * @param country Country's ID
+   * @param brawler Brawler's ID
+   * @param queryParams More info about these on https://developer.brawlstars.com
+   * @returns
+   */
+  public async getBrawlerRankings(
     country: string,
     brawler: string,
     {
@@ -135,7 +169,13 @@ export class Client {
     );
   }
 
-  public getClubMembers(
+  /**
+   *
+   * @param tag The club's tag
+   * @param queryParams More info about these on https://developer.brawlstars.com
+   * @returns Array of members
+   */
+  public async getClubMembers(
     tag: string,
     {
       before,
@@ -154,7 +194,12 @@ export class Client {
     );
   }
 
-  public getBrawlers({
+  /**
+   *
+   * @param queryParams More info about these on https://developer.brawlstars.com
+   * @returns An array of all the brawlers
+   */
+  public async getBrawlers({
     before,
     after,
     limit,
@@ -169,7 +214,20 @@ export class Client {
     return this._fetch<Brawler[]>(`/brawlers`, query);
   }
 
-  public getBrawler(id: string) {
+  /**
+   *
+   * @param id Brawler ID
+   * @returns An object containing data about a brawler
+   */
+  public async getBrawler(id: string) {
     return this._fetch<Brawler>(`/brawlers/${id}`);
+  }
+
+  /**
+   *
+   * @returns An array containing data about each map slot
+   */
+  public async getMapRotation() {
+    return this._fetch<Slot[]>("/events/rotation");
   }
 }
